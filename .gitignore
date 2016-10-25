@@ -1,0 +1,24 @@
+# Visual Studio specific files
+*.opensdf
+*.sdf
+*.vcxproj.user
+*.db
+*.opendb
+/.vs
+
+# CMake specific files
+Makefile
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+
+# Compilation results
+/Bin
+/Obj
+*.a
+
+# MineZPRft log files
+*.log
+
+# Chunk files
+ChunkBank
