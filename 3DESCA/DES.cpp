@@ -134,41 +134,41 @@ chunk32 DES::SBoxPermutation(chunk32 asd)
 {
     chunk32 result;
     result.val = 0;
-    SETBIT(result.arr[0], 0, GETBIT(asd.arr[2], 7));
-    SETBIT(result.arr[0], 1, GETBIT(asd.arr[1], 6));
-    SETBIT(result.arr[0], 2, GETBIT(asd.arr[3], 3));
-    SETBIT(result.arr[0], 3, GETBIT(asd.arr[3], 4));
-    SETBIT(result.arr[0], 4, GETBIT(asd.arr[4], 4));
-    SETBIT(result.arr[0], 5, GETBIT(asd.arr[2], 3));
-    SETBIT(result.arr[0], 6, GETBIT(asd.arr[4], 3));
-    SETBIT(result.arr[0], 7, GETBIT(asd.arr[3], 0));
+    SETBIT(result.arr[0], 0, GETBIT(asd.arr[1], 7));
+    SETBIT(result.arr[0], 1, GETBIT(asd.arr[0], 6));
+    SETBIT(result.arr[0], 2, GETBIT(asd.arr[2], 3));
+    SETBIT(result.arr[0], 3, GETBIT(asd.arr[2], 4));
+    SETBIT(result.arr[0], 4, GETBIT(asd.arr[3], 4));
+    SETBIT(result.arr[0], 5, GETBIT(asd.arr[1], 3));
+    SETBIT(result.arr[0], 6, GETBIT(asd.arr[3], 3));
+    SETBIT(result.arr[0], 7, GETBIT(asd.arr[2], 0));
 
-    SETBIT(result.arr[1], 0, GETBIT(asd.arr[1], 0));
-    SETBIT(result.arr[1], 1, GETBIT(asd.arr[2], 6));
-    SETBIT(result.arr[1], 2, GETBIT(asd.arr[3], 6));
-    SETBIT(result.arr[1], 3, GETBIT(asd.arr[4], 1));
-    SETBIT(result.arr[1], 4, GETBIT(asd.arr[1], 4));
-    SETBIT(result.arr[1], 5, GETBIT(asd.arr[3], 1));
-    SETBIT(result.arr[1], 6, GETBIT(asd.arr[4], 6));
-    SETBIT(result.arr[1], 7, GETBIT(asd.arr[2], 1));
+    SETBIT(result.arr[1], 0, GETBIT(asd.arr[0], 0));
+    SETBIT(result.arr[1], 1, GETBIT(asd.arr[1], 6));
+    SETBIT(result.arr[1], 2, GETBIT(asd.arr[2], 6));
+    SETBIT(result.arr[1], 3, GETBIT(asd.arr[3], 1));
+    SETBIT(result.arr[1], 4, GETBIT(asd.arr[0], 4));
+    SETBIT(result.arr[1], 5, GETBIT(asd.arr[2], 1));
+    SETBIT(result.arr[1], 6, GETBIT(asd.arr[3], 6));
+    SETBIT(result.arr[1], 7, GETBIT(asd.arr[1], 1));
 
-    SETBIT(result.arr[2], 0, GETBIT(asd.arr[1], 1));
-    SETBIT(result.arr[2], 1, GETBIT(asd.arr[1], 7));
-    SETBIT(result.arr[2], 2, GETBIT(asd.arr[3], 7));
-    SETBIT(result.arr[2], 3, GETBIT(asd.arr[2], 5));
-    SETBIT(result.arr[2], 4, GETBIT(asd.arr[4], 7));
-    SETBIT(result.arr[2], 5, GETBIT(asd.arr[4], 2));
-    SETBIT(result.arr[2], 6, GETBIT(asd.arr[1], 2));
-    SETBIT(result.arr[2], 7, GETBIT(asd.arr[2], 0));
+    SETBIT(result.arr[2], 0, GETBIT(asd.arr[0], 1));
+    SETBIT(result.arr[2], 1, GETBIT(asd.arr[0], 7));
+    SETBIT(result.arr[2], 2, GETBIT(asd.arr[2], 7));
+    SETBIT(result.arr[2], 3, GETBIT(asd.arr[1], 5));
+    SETBIT(result.arr[2], 4, GETBIT(asd.arr[3], 7));
+    SETBIT(result.arr[2], 5, GETBIT(asd.arr[3], 2));
+    SETBIT(result.arr[2], 6, GETBIT(asd.arr[0], 2));
+    SETBIT(result.arr[2], 7, GETBIT(asd.arr[1], 0));
 
-    SETBIT(result.arr[3], 0, GETBIT(asd.arr[3], 2));
-    SETBIT(result.arr[3], 1, GETBIT(asd.arr[2], 4));
-    SETBIT(result.arr[3], 2, GETBIT(asd.arr[4], 5));
-    SETBIT(result.arr[3], 3, GETBIT(asd.arr[1], 5));
-    SETBIT(result.arr[3], 4, GETBIT(asd.arr[3], 5));
-    SETBIT(result.arr[3], 5, GETBIT(asd.arr[2], 2));
-    SETBIT(result.arr[3], 6, GETBIT(asd.arr[1], 3));
-    SETBIT(result.arr[3], 7, GETBIT(asd.arr[4], 0));
+    SETBIT(result.arr[3], 0, GETBIT(asd.arr[2], 2));
+    SETBIT(result.arr[3], 1, GETBIT(asd.arr[1], 4));
+    SETBIT(result.arr[3], 2, GETBIT(asd.arr[3], 5));
+    SETBIT(result.arr[3], 3, GETBIT(asd.arr[0], 5));
+    SETBIT(result.arr[3], 4, GETBIT(asd.arr[2], 5));
+    SETBIT(result.arr[3], 5, GETBIT(asd.arr[1], 2));
+    SETBIT(result.arr[3], 6, GETBIT(asd.arr[0], 3));
+    SETBIT(result.arr[3], 7, GETBIT(asd.arr[3], 0));
 
     return result;
 }
@@ -179,9 +179,9 @@ chunk64 DES::PermutedChoice1(chunk64 key)
     shortKey.val = 0;
     uint8_t size = static_cast<uint8_t>(key.arr.size());
     uint8_t halfSize = size / 2;
-    for (uint8_t i = 0; i < size; i++)
+    for (uint8_t i = 0; i < halfSize; i++)
     {
-        for (uint8_t j = 0; j < halfSize; j++)
+        for (uint8_t j = 0; j < size; j++)
         {
             SETBIT(shortKey.arr[           i], j, GETBIT(key.arr[j],             i));
             SETBIT(shortKey.arr[halfSize + i], j, GETBIT(key.arr[j], (size - 2 - i)));
