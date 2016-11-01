@@ -54,6 +54,8 @@ const uint8_t sBox[8][4][16] = {
     }
 };
 
+namespace TDESCA {
+
 uint8_t DES::Substitution(uint8_t sBoxNo, uint8_t inputVal)
 {
     uint8_t idxH = (inputVal >> 1) & 0xF;
@@ -66,9 +68,9 @@ uint8_t DES::Substitution(uint8_t sBoxNo, uint8_t inputVal)
 }
 
 
-DES::chunk64 DES::InitPerm(DES::chunk64 asd)
+chunk64 DES::InitPerm(chunk64 asd)
 {
-    DES::chunk64 result;
+    chunk64 result;
     result.val = 0;
     uint8_t index = 1;
     uint8_t size = static_cast<uint8_t>(asd.arr.size());
@@ -89,9 +91,9 @@ DES::chunk64 DES::InitPerm(DES::chunk64 asd)
     return result;
 }
 
-DES::chunk64 DES::FinalPerm(DES::chunk64 asd)
+chunk64 DES::FinalPerm(chunk64 asd)
 {
-    DES::chunk64 result;
+    chunk64 result;
     result.val = 0;
     uint8_t size = static_cast<uint8_t>(asd.arr.size());
     uint8_t halfSize = size / 2;
@@ -110,9 +112,9 @@ DES::chunk64 DES::FinalPerm(DES::chunk64 asd)
     return result;
 }
 
-DES::chunk48 DES::Expansion(DES::chunk32 we)
+chunk48 DES::Expansion(chunk32 we)
 {
-    DES::chunk48 result;
+    chunk48 result;
     result.val = 0;
     uint64_t weDup = we.val;
     weDup = (weDup << 32) | we.val;
@@ -128,7 +130,7 @@ DES::chunk48 DES::Expansion(DES::chunk32 we)
     return result;
 }
 
-DES::chunk32 DES::SBoxPermutation(DES::chunk32 asd)
+chunk32 DES::SBoxPermutation(chunk32 asd)
 {
     chunk32 result;
     result.val = 0;
@@ -171,9 +173,9 @@ DES::chunk32 DES::SBoxPermutation(DES::chunk32 asd)
     return result;
 }
 
-DES::chunk64 DES::PermutedChoice1(DES::chunk64 key)
+chunk64 DES::PermutedChoice1(chunk64 key)
 {
-    DES::chunk64 shortKey;
+    chunk64 shortKey;
     shortKey.val = 0;
     uint8_t size = static_cast<uint8_t>(key.arr.size());
     uint8_t halfSize = size / 2;
@@ -193,7 +195,7 @@ DES::chunk64 DES::PermutedChoice1(DES::chunk64 key)
     return shortKey;
 }
 
-DES::chunk48 DES::PermutedChoice2(DES::chunk64 key)
+chunk48 DES::PermutedChoice2(chunk64 key)
 {
     chunk48 result;
     result.val = 0;
@@ -255,7 +257,7 @@ DES::chunk48 DES::PermutedChoice2(DES::chunk64 key)
 }
 
 // There is a problem with "not-fully-used-numbertypes", as they cannot be rotated, etc normally
-uint32_t DES::RotateHalfkeyLeft(DES::chunk32 halfKey, uint8_t n)
+uint32_t DES::RotateHalfkeyLeft(chunk32 halfKey, uint8_t n)
 {
     uint8_t rot = n % HALFKEY_LEN;
     return ((halfKey.val << rot) | (halfKey.val >> (HALFKEY_LEN - rot))) & 0xFFFFFFFF;
@@ -278,7 +280,7 @@ uint8_t rotNumber(uint8_t round) // It's short, so can be converted into constar
     return 0;
 }
 
-DES::chunk32 DES::Feistel(DES::chunk32 data, DES::chunk48 subKey)
+chunk32 DES::Feistel(chunk32 data, chunk48 subKey)
 {
     // 32bit chunk is expanded to 48bits, referred to as X1
     chunk48 expandedData = Expansion(data);
@@ -303,7 +305,7 @@ DES::chunk32 DES::Feistel(DES::chunk32 data, DES::chunk48 subKey)
     return SBoxPermutation(sboxedData);
 }
 
-DES::chunk64 DES::Process(DES::chunk64 key, DES::chunk64 data)
+chunk64 DES::Process(chunk64 key, chunk64 data)
 {
     // remove 8bits from key for parity check - the key is now 56bit
     chunk64 strippedKey = PermutedChoice1(key);
@@ -357,3 +359,5 @@ DES::chunk64 DES::Process(DES::chunk64 key, DES::chunk64 data)
     // u got single chunk of ciphertext
     return FinalPerm(cipher);
 }
+
+} // namespace TDESCA

@@ -10,5 +10,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="DESTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DESCA\DES.cpp">
+      <Filter>3DESCA</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

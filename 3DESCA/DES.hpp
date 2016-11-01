@@ -1,31 +1,13 @@
 #pragma once
+
 #include <cstdint>
-#include <array>
+#include "Chunk.hpp"
+
+
+namespace TDESCA {
 
 class DES
 {
-    union chunk64
-    {
-        std::array<uint8_t, 8> arr;
-        uint64_t val;
-
-        // arr is inverted val:
-        // val = 0x0102030405060708 will result in
-        // arr = {8, 7, 6, 5, 4, 3, 2, 1};
-    };
-
-    union chunk48
-    {
-        std::array<uint8_t, 6> arr;
-        uint64_t val;
-    };
-
-    union chunk32
-    {
-        std::array<uint8_t, 4> arr;
-        uint32_t val;
-    };
-
     chunk64 InitPerm(chunk64 msg);
     chunk64 FinalPerm(chunk64 ciph);
     chunk48 Expansion(chunk32 data);
@@ -62,3 +44,5 @@ public:
         // u got single chunk of ciphertext
     //std::vector<uint8_t> Finish();
 };
+
+} // namespace TDESCA

@@ -126,6 +126,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Bit.hpp" />
+    <ClInclude Include="Chunk.hpp" />
     <ClInclude Include="DES.hpp" />
   </ItemGroup>
   <ItemGroup>
