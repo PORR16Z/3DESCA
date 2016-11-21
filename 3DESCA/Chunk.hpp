@@ -25,7 +25,7 @@ union chunk64
 
 union chunk48
 {
-    std::array<uint8_t, 6> arr;
+    std::array<uint8_t, 8> arr;
     uint64_t val;
 };
 

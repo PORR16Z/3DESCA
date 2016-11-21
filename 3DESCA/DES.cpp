@@ -175,83 +175,136 @@ chunk32 DES::SBoxPermutation(chunk32 asd)
 
 chunk64 DES::PermutedChoice1(chunk64 key)
 {
-    chunk64 shortKey;
-    shortKey.val = 0;
-    uint8_t size = static_cast<uint8_t>(key.arr.size());
-    uint8_t halfSize = size / 2;
-    for (uint8_t i = 0; i < halfSize; i++)
-    {
-        for (uint8_t j = 0; j < size; j++)
-        {
-            SETBIT(shortKey.arr[           i], j, GETBIT(key.arr[j],             i));
-            SETBIT(shortKey.arr[halfSize + i], j, GETBIT(key.arr[j], (size - 2 - i)));
-        }
-    }
+    chunk64 result;
+    result.val = 0;
+    
+    SETBIT(result.arr[6], 7, GETBIT(key.arr[0], 7));
+    SETBIT(result.arr[6], 6, GETBIT(key.arr[1], 7));
+    SETBIT(result.arr[6], 5, GETBIT(key.arr[2], 7));
+    SETBIT(result.arr[6], 4, GETBIT(key.arr[3], 7));
+    SETBIT(result.arr[6], 3, GETBIT(key.arr[4], 7));
+    SETBIT(result.arr[6], 2, GETBIT(key.arr[5], 7));
+    SETBIT(result.arr[6], 1, GETBIT(key.arr[6], 7));
 
-    shortKey.val = ((shortKey.val >> 8) & 0x00FFFFFFF0000000) |
-                   ((shortKey.val >> 4) &          0xFFFFFF0) |
-                   ( shortKey.val       &                0xF);
+    SETBIT(result.arr[6], 0, GETBIT(key.arr[7], 7));
+    SETBIT(result.arr[5], 7, GETBIT(key.arr[0], 6));
+    SETBIT(result.arr[5], 6, GETBIT(key.arr[1], 6));
+    SETBIT(result.arr[5], 5, GETBIT(key.arr[2], 6));
+    SETBIT(result.arr[5], 4, GETBIT(key.arr[3], 6));
+    SETBIT(result.arr[5], 3, GETBIT(key.arr[4], 6));
+    SETBIT(result.arr[5], 2, GETBIT(key.arr[5], 6));
 
-    return shortKey;
+    SETBIT(result.arr[5], 1, GETBIT(key.arr[6], 6));
+    SETBIT(result.arr[5], 0, GETBIT(key.arr[7], 6));
+    SETBIT(result.arr[4], 7, GETBIT(key.arr[0], 5));
+    SETBIT(result.arr[4], 6, GETBIT(key.arr[1], 5));
+    SETBIT(result.arr[4], 5, GETBIT(key.arr[2], 5));
+    SETBIT(result.arr[4], 4, GETBIT(key.arr[3], 5));
+    SETBIT(result.arr[4], 3, GETBIT(key.arr[4], 5));
+
+    SETBIT(result.arr[4], 2, GETBIT(key.arr[5], 5));
+    SETBIT(result.arr[4], 1, GETBIT(key.arr[6], 5));
+    SETBIT(result.arr[4], 0, GETBIT(key.arr[7], 5));
+    SETBIT(result.arr[3], 7, GETBIT(key.arr[0], 4));
+    SETBIT(result.arr[3], 6, GETBIT(key.arr[1], 4));
+    SETBIT(result.arr[3], 5, GETBIT(key.arr[2], 4));
+    SETBIT(result.arr[3], 4, GETBIT(key.arr[3], 4));
+
+    SETBIT(result.arr[3], 3, GETBIT(key.arr[0], 1));
+    SETBIT(result.arr[3], 2, GETBIT(key.arr[1], 1));
+    SETBIT(result.arr[3], 1, GETBIT(key.arr[2], 1));
+    SETBIT(result.arr[3], 0, GETBIT(key.arr[3], 1));
+    SETBIT(result.arr[2], 7, GETBIT(key.arr[4], 1));
+    SETBIT(result.arr[2], 6, GETBIT(key.arr[5], 1));
+    SETBIT(result.arr[2], 5, GETBIT(key.arr[6], 1));
+
+    SETBIT(result.arr[2], 4, GETBIT(key.arr[7], 1));
+    SETBIT(result.arr[2], 3, GETBIT(key.arr[0], 2));
+    SETBIT(result.arr[2], 2, GETBIT(key.arr[1], 2));
+    SETBIT(result.arr[2], 1, GETBIT(key.arr[2], 2));
+    SETBIT(result.arr[2], 0, GETBIT(key.arr[3], 2));
+    SETBIT(result.arr[1], 7, GETBIT(key.arr[4], 2));
+    SETBIT(result.arr[1], 6, GETBIT(key.arr[5], 2));
+
+    SETBIT(result.arr[1], 5, GETBIT(key.arr[6], 2));
+    SETBIT(result.arr[1], 4, GETBIT(key.arr[7], 2));
+    SETBIT(result.arr[1], 3, GETBIT(key.arr[0], 3));
+    SETBIT(result.arr[1], 2, GETBIT(key.arr[1], 3));
+    SETBIT(result.arr[1], 1, GETBIT(key.arr[2], 3));
+    SETBIT(result.arr[1], 0, GETBIT(key.arr[3], 3));
+    SETBIT(result.arr[0], 7, GETBIT(key.arr[4], 3));
+
+    SETBIT(result.arr[0], 6, GETBIT(key.arr[5], 3));
+    SETBIT(result.arr[0], 5, GETBIT(key.arr[6], 3));
+    SETBIT(result.arr[0], 4, GETBIT(key.arr[7], 3));
+    SETBIT(result.arr[0], 3, GETBIT(key.arr[4], 4));
+    SETBIT(result.arr[0], 2, GETBIT(key.arr[5], 4));
+    SETBIT(result.arr[0], 1, GETBIT(key.arr[6], 4));
+    SETBIT(result.arr[0], 0, GETBIT(key.arr[7], 4));
+
+    return result;
 }
 
-chunk48 DES::PermutedChoice2(chunk64 key)
+chunk64 DES::PermutedChoice2(chunk64 key)
 {
-    chunk48 result;
+    chunk64 result;
     result.val = 0;
-    SETBIT(result.arr[0], 0, GETBIT(key.arr[1], 5));
-    SETBIT(result.arr[0], 1, GETBIT(key.arr[2], 0));
-    SETBIT(result.arr[0], 2, GETBIT(key.arr[1], 2));
-    SETBIT(result.arr[0], 3, GETBIT(key.arr[2], 7));
-    SETBIT(result.arr[0], 4, GETBIT(key.arr[0], 0));
-    SETBIT(result.arr[0], 5, GETBIT(key.arr[0], 4));
-    SETBIT(result.arr[0], 6, GETBIT(key.arr[0], 2));
-    SETBIT(result.arr[0], 7, GETBIT(key.arr[3], 3));
 
-    SETBIT(result.arr[1], 0, GETBIT(key.arr[1], 6));
-    SETBIT(result.arr[1], 1, GETBIT(key.arr[0], 5));
-    SETBIT(result.arr[1], 2, GETBIT(key.arr[2], 4));
-    SETBIT(result.arr[1], 3, GETBIT(key.arr[1], 1));
-    SETBIT(result.arr[1], 4, GETBIT(key.arr[2], 6));
-    SETBIT(result.arr[1], 5, GETBIT(key.arr[2], 2));
-    SETBIT(result.arr[1], 6, GETBIT(key.arr[1], 3));
-    SETBIT(result.arr[1], 7, GETBIT(key.arr[0], 3));
+    SETBIT(result.arr[5], 7, GETBIT(key.arr[5], 2));
+    SETBIT(result.arr[5], 6, GETBIT(key.arr[4], 7));
+    SETBIT(result.arr[5], 5, GETBIT(key.arr[5], 5));
+    SETBIT(result.arr[5], 4, GETBIT(key.arr[4], 0));
+    SETBIT(result.arr[5], 3, GETBIT(key.arr[6], 7));
+    SETBIT(result.arr[5], 2, GETBIT(key.arr[6], 3));
 
-    SETBIT(result.arr[2], 0, GETBIT(key.arr[3], 1));
-    SETBIT(result.arr[2], 1, GETBIT(key.arr[0], 7));
-    SETBIT(result.arr[2], 2, GETBIT(key.arr[1], 7));
-    SETBIT(result.arr[2], 3, GETBIT(key.arr[0], 6));
-    SETBIT(result.arr[2], 4, GETBIT(key.arr[3], 2));
-    SETBIT(result.arr[2], 5, GETBIT(key.arr[2], 3));
-    SETBIT(result.arr[2], 6, GETBIT(key.arr[1], 4));
-    SETBIT(result.arr[2], 7, GETBIT(key.arr[0], 1));
+    SETBIT(result.arr[5], 1, GETBIT(key.arr[6], 5));
+    SETBIT(result.arr[5], 0, GETBIT(key.arr[3], 4));
+    SETBIT(result.arr[4], 7, GETBIT(key.arr[5], 1));
+    SETBIT(result.arr[4], 6, GETBIT(key.arr[6], 2));
+    SETBIT(result.arr[4], 5, GETBIT(key.arr[4], 3));
+    SETBIT(result.arr[4], 4, GETBIT(key.arr[5], 6));
 
-    SETBIT(result.arr[3], 0, GETBIT(key.arr[5], 0));
-    SETBIT(result.arr[3], 1, GETBIT(key.arr[6], 3));
-    SETBIT(result.arr[3], 2, GETBIT(key.arr[3], 6));
-    SETBIT(result.arr[3], 3, GETBIT(key.arr[4], 4));
-    SETBIT(result.arr[3], 4, GETBIT(key.arr[5], 6));
-    SETBIT(result.arr[3], 5, GETBIT(key.arr[6], 6));
-    SETBIT(result.arr[3], 6, GETBIT(key.arr[3], 5));
-    SETBIT(result.arr[3], 7, GETBIT(key.arr[4], 7));
-
-    SETBIT(result.arr[4], 0, GETBIT(key.arr[6], 2));
+    SETBIT(result.arr[4], 3, GETBIT(key.arr[4], 1));
+    SETBIT(result.arr[4], 2, GETBIT(key.arr[4], 5));
     SETBIT(result.arr[4], 1, GETBIT(key.arr[5], 4));
-    SETBIT(result.arr[4], 2, GETBIT(key.arr[4], 0));
-    SETBIT(result.arr[4], 3, GETBIT(key.arr[5], 7));
-    SETBIT(result.arr[4], 4, GETBIT(key.arr[5], 3));
-    SETBIT(result.arr[4], 5, GETBIT(key.arr[6], 0));
-    SETBIT(result.arr[4], 6, GETBIT(key.arr[4], 6));
-    SETBIT(result.arr[4], 7, GETBIT(key.arr[6], 7));
+    SETBIT(result.arr[4], 0, GETBIT(key.arr[6], 4));
+    SETBIT(result.arr[3], 7, GETBIT(key.arr[3], 6));
+    SETBIT(result.arr[3], 6, GETBIT(key.arr[6], 0));
 
-    SETBIT(result.arr[5], 0, GETBIT(key.arr[4], 1));
-    SETBIT(result.arr[5], 1, GETBIT(key.arr[6], 4));
-    SETBIT(result.arr[5], 2, GETBIT(key.arr[5], 5));
-    SETBIT(result.arr[5], 3, GETBIT(key.arr[5], 1));
-    SETBIT(result.arr[5], 4, GETBIT(key.arr[6], 1));
-    SETBIT(result.arr[5], 5, GETBIT(key.arr[4], 3));
-    SETBIT(result.arr[5], 6, GETBIT(key.arr[3], 4));
-    SETBIT(result.arr[5], 7, GETBIT(key.arr[3], 7));
+    SETBIT(result.arr[3], 5, GETBIT(key.arr[5], 0));
+    SETBIT(result.arr[3], 4, GETBIT(key.arr[6], 1));
+    SETBIT(result.arr[3], 3, GETBIT(key.arr[3], 5));
+    SETBIT(result.arr[3], 2, GETBIT(key.arr[4], 4));
+    SETBIT(result.arr[3], 1, GETBIT(key.arr[5], 3));
+    SETBIT(result.arr[3], 0, GETBIT(key.arr[6], 6));
+    
+    SETBIT(result.arr[2], 7, GETBIT(key.arr[1], 7));
+    SETBIT(result.arr[2], 6, GETBIT(key.arr[0], 4));
+    SETBIT(result.arr[2], 5, GETBIT(key.arr[3], 1));
+    SETBIT(result.arr[2], 4, GETBIT(key.arr[2], 3));
+    SETBIT(result.arr[2], 3, GETBIT(key.arr[1], 1));
+    SETBIT(result.arr[2], 2, GETBIT(key.arr[0], 1));
+
+    SETBIT(result.arr[2], 1, GETBIT(key.arr[3], 2));
+    SETBIT(result.arr[2], 0, GETBIT(key.arr[2], 0));
+    SETBIT(result.arr[1], 7, GETBIT(key.arr[0], 5));
+    SETBIT(result.arr[1], 6, GETBIT(key.arr[1], 3));
+    SETBIT(result.arr[1], 5, GETBIT(key.arr[2], 7));
+    SETBIT(result.arr[1], 4, GETBIT(key.arr[1], 0));
+
+    SETBIT(result.arr[1], 3, GETBIT(key.arr[1], 4));
+    SETBIT(result.arr[1], 2, GETBIT(key.arr[0], 7));
+    SETBIT(result.arr[1], 1, GETBIT(key.arr[2], 1));
+    SETBIT(result.arr[1], 0, GETBIT(key.arr[0], 0));
+    SETBIT(result.arr[0], 7, GETBIT(key.arr[2], 6));
+    SETBIT(result.arr[0], 6, GETBIT(key.arr[0], 3));
+
+    SETBIT(result.arr[0], 5, GETBIT(key.arr[1], 2));
+    SETBIT(result.arr[0], 4, GETBIT(key.arr[1], 6));
+    SETBIT(result.arr[0], 3, GETBIT(key.arr[0], 6));
+    SETBIT(result.arr[0], 2, GETBIT(key.arr[2], 4));
+    SETBIT(result.arr[0], 1, GETBIT(key.arr[3], 3));
+    SETBIT(result.arr[0], 0, GETBIT(key.arr[3], 0));
 
     return result;
 }
@@ -260,7 +313,15 @@ chunk48 DES::PermutedChoice2(chunk64 key)
 uint32_t DES::RotateHalfkeyLeft(chunk32 halfKey, uint8_t n)
 {
     uint8_t rot = n % HALFKEY_LEN;
-    return ((halfKey.val << rot) | (halfKey.val >> (HALFKEY_LEN - rot))) & 0xFFFFFFFF;
+
+    // first, rotate the entire value left by rot numbers
+    uint64_t result = halfKey.val << rot;
+
+    // grab whatever exceeded HALFKEY_LEN bits
+    uint64_t remainder = (result >> HALFKEY_LEN) & 0x0FFFFFFF;
+
+    // and add it at the end
+    return (result | remainder) & 0x0FFFFFFF;
 }
 
 uint8_t rotNumber(uint8_t round) // It's short, so can be converted into constarray for speed
@@ -312,11 +373,11 @@ chunk64 DES::Process(chunk64 key, chunk64 data)
 
     // split output from PC1 to left and right
     chunk32 lKey, rKey;
-    lKey.val = (strippedKey.val >> HALFKEY_LEN) & 0xFFFFFFF;
-    rKey.val = strippedKey.val & 0xFFFFFFF;
+    lKey.val = (strippedKey.val >> 28) & 0x0FFFFFFF;
+    rKey.val = strippedKey.val & 0x0FFFFFFF;
 
     // generate 16 subKeys - 1 for each round
-    chunk48 subKeys[16];
+    chunk64 subKeys[16];
 
     for (int i = 0; i < 16; i++)
     {
@@ -325,7 +386,7 @@ chunk64 DES::Process(chunk64 key, chunk64 data)
         lKey.val = RotateHalfkeyLeft(lKey, rot);
         rKey.val = RotateHalfkeyLeft(rKey, rot);
         currentKey.val = lKey.val;
-        currentKey.val = (currentKey.val << 32) | rKey.val;
+        currentKey.val = (currentKey.val << 28) | rKey.val;
         subKeys[i] = PermutedChoice2(currentKey);
     }
 

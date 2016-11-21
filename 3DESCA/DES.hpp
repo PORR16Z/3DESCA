@@ -13,8 +13,8 @@ class DES
     chunk48 Expansion(chunk32 data);
     uint8_t Substitution(uint8_t sBoxNo, uint8_t inputVal);
     chunk32 SBoxPermutation(chunk32 data);
-    chunk64 PermutedChoice1(chunk64 key);
-    chunk48 PermutedChoice2(chunk64 key);
+    chunk64 PermutedChoice1(chunk64 key); // in fact outputs 56-bit key
+    chunk64 PermutedChoice2(chunk64 key); // in fact outputs 48-bit key
     chunk32 Feistel(chunk32 data, chunk48 subKey);
     uint32_t RotateHalfkeyLeft(chunk32 halfKey, uint8_t n);
 
