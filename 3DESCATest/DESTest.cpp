@@ -8,8 +8,9 @@ TEST(DES, Basic)
     TDESCA::DES cipher;
 
     TDESCA::chunk64 in(0x6162636465666768); // abcdefgh
-    TDESCA::chunk64 key(0x133457799BBCDFF1);
-    //TDESCA::chunk64 key(0xF1DFBC9B79573413);
+    //TDESCA::chunk64 in(0x0123456789ABCDEF);
+    //TDESCA::chunk64 key(0x133457799BBCDFF1);
+    TDESCA::chunk64 key(0xF1DFBC9B79573413);
     TDESCA::chunk64 out = cipher.Process(key, in);
 
     EXPECT_EQ(result.val, out.val) << "In hex: " << std::endl << std::hex << std::setfill('0') <<

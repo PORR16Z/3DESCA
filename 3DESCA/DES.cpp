@@ -112,9 +112,9 @@ chunk64 DES::FinalPerm(chunk64 asd)
     return result;
 }
 
-chunk48 DES::Expansion(chunk32 we)
+chunk64 DES::Expansion(chunk32 we)
 {
-    chunk48 result;
+    chunk64 result;
     result.val = 0;
     uint64_t weDup = we.val;
     weDup = (weDup << 32) | we.val;
@@ -130,46 +130,47 @@ chunk48 DES::Expansion(chunk32 we)
     return result;
 }
 
-chunk32 DES::SBoxPermutation(chunk32 asd)
+chunk32 DES::SBoxPermutation(chunk32 in)
 {
     chunk32 result;
     result.val = 0;
-    SETBIT(result.arr[0], 0, GETBIT(asd.arr[1], 7));
-    SETBIT(result.arr[0], 1, GETBIT(asd.arr[0], 6));
-    SETBIT(result.arr[0], 2, GETBIT(asd.arr[2], 3));
-    SETBIT(result.arr[0], 3, GETBIT(asd.arr[2], 4));
-    SETBIT(result.arr[0], 4, GETBIT(asd.arr[3], 4));
-    SETBIT(result.arr[0], 5, GETBIT(asd.arr[1], 3));
-    SETBIT(result.arr[0], 6, GETBIT(asd.arr[3], 3));
-    SETBIT(result.arr[0], 7, GETBIT(asd.arr[2], 0));
 
-    SETBIT(result.arr[1], 0, GETBIT(asd.arr[0], 0));
-    SETBIT(result.arr[1], 1, GETBIT(asd.arr[1], 6));
-    SETBIT(result.arr[1], 2, GETBIT(asd.arr[2], 6));
-    SETBIT(result.arr[1], 3, GETBIT(asd.arr[3], 1));
-    SETBIT(result.arr[1], 4, GETBIT(asd.arr[0], 4));
-    SETBIT(result.arr[1], 5, GETBIT(asd.arr[2], 1));
-    SETBIT(result.arr[1], 6, GETBIT(asd.arr[3], 6));
-    SETBIT(result.arr[1], 7, GETBIT(asd.arr[1], 1));
+    SETBIT(result.arr[3], 7, GETBIT(in.arr[2], 0));
+    SETBIT(result.arr[3], 6, GETBIT(in.arr[3], 1));
+    SETBIT(result.arr[3], 5, GETBIT(in.arr[1], 4));
+    SETBIT(result.arr[3], 4, GETBIT(in.arr[1], 3));
+    SETBIT(result.arr[3], 3, GETBIT(in.arr[0], 3));
+    SETBIT(result.arr[3], 2, GETBIT(in.arr[2], 4));
+    SETBIT(result.arr[3], 1, GETBIT(in.arr[0], 4));
+    SETBIT(result.arr[3], 0, GETBIT(in.arr[1], 7));
 
-    SETBIT(result.arr[2], 0, GETBIT(asd.arr[0], 1));
-    SETBIT(result.arr[2], 1, GETBIT(asd.arr[0], 7));
-    SETBIT(result.arr[2], 2, GETBIT(asd.arr[2], 7));
-    SETBIT(result.arr[2], 3, GETBIT(asd.arr[1], 5));
-    SETBIT(result.arr[2], 4, GETBIT(asd.arr[3], 7));
-    SETBIT(result.arr[2], 5, GETBIT(asd.arr[3], 2));
-    SETBIT(result.arr[2], 6, GETBIT(asd.arr[0], 2));
-    SETBIT(result.arr[2], 7, GETBIT(asd.arr[1], 0));
+    SETBIT(result.arr[2], 7, GETBIT(in.arr[3], 7));
+    SETBIT(result.arr[2], 6, GETBIT(in.arr[2], 1));
+    SETBIT(result.arr[2], 5, GETBIT(in.arr[1], 1));
+    SETBIT(result.arr[2], 4, GETBIT(in.arr[0], 6));
+    SETBIT(result.arr[2], 3, GETBIT(in.arr[3], 3));
+    SETBIT(result.arr[2], 2, GETBIT(in.arr[1], 6));
+    SETBIT(result.arr[2], 1, GETBIT(in.arr[0], 1));
+    SETBIT(result.arr[2], 0, GETBIT(in.arr[2], 6));
 
-    SETBIT(result.arr[3], 0, GETBIT(asd.arr[2], 2));
-    SETBIT(result.arr[3], 1, GETBIT(asd.arr[1], 4));
-    SETBIT(result.arr[3], 2, GETBIT(asd.arr[3], 5));
-    SETBIT(result.arr[3], 3, GETBIT(asd.arr[0], 5));
-    SETBIT(result.arr[3], 4, GETBIT(asd.arr[2], 5));
-    SETBIT(result.arr[3], 5, GETBIT(asd.arr[1], 2));
-    SETBIT(result.arr[3], 6, GETBIT(asd.arr[0], 3));
-    SETBIT(result.arr[3], 7, GETBIT(asd.arr[3], 0));
+    SETBIT(result.arr[1], 7, GETBIT(in.arr[3], 6));
+    SETBIT(result.arr[1], 6, GETBIT(in.arr[3], 0));
+    SETBIT(result.arr[1], 5, GETBIT(in.arr[1], 0));
+    SETBIT(result.arr[1], 4, GETBIT(in.arr[2], 2));
+    SETBIT(result.arr[1], 3, GETBIT(in.arr[0], 0));
+    SETBIT(result.arr[1], 2, GETBIT(in.arr[0], 5));
+    SETBIT(result.arr[1], 1, GETBIT(in.arr[3], 5));
+    SETBIT(result.arr[1], 0, GETBIT(in.arr[2], 7));
 
+    SETBIT(result.arr[0], 7, GETBIT(in.arr[1], 5));
+    SETBIT(result.arr[0], 6, GETBIT(in.arr[2], 3));
+    SETBIT(result.arr[0], 5, GETBIT(in.arr[0], 2));
+    SETBIT(result.arr[0], 4, GETBIT(in.arr[3], 2));
+    SETBIT(result.arr[0], 3, GETBIT(in.arr[1], 2));
+    SETBIT(result.arr[0], 2, GETBIT(in.arr[2], 5));
+    SETBIT(result.arr[0], 1, GETBIT(in.arr[3], 4));
+    SETBIT(result.arr[0], 0, GETBIT(in.arr[0], 7));
+    
     return result;
 }
 
@@ -341,10 +342,10 @@ uint8_t rotNumber(uint8_t round) // It's short, so can be converted into constar
     return 0;
 }
 
-chunk32 DES::Feistel(chunk32 data, chunk48 subKey)
+chunk32 DES::Feistel(chunk32 data, chunk64 subKey)
 {
     // 32bit chunk is expanded to 48bits, referred to as X1
-    chunk48 expandedData = Expansion(data);
+    chunk64 expandedData = Expansion(data);
 
     // X2 = X1 xor subkey
     expandedData.val = expandedData.val ^ subKey.val;
