@@ -367,7 +367,7 @@ chunk32 DES::Feistel(chunk32 data, chunk64 subKey)
     return SBoxPermutation(sboxedData);
 }
 
-chunk64 DES::Process(chunk64 key, chunk64 data)
+chunk64 DES::Process(chunk64 key, chunk64 data, bool isDecode)
 {
     // remove 8bits from key for parity check - the key is now 56bit
     chunk64 strippedKey = PermutedChoice1(key);
@@ -400,13 +400,22 @@ chunk64 DES::Process(chunk64 key, chunk64 data)
     lData.val = permData.val >> 32;
     rData.val = permData.val & 0xFFFFFFFF;
 
-    for (int i = 0; i < 16; i++)
+    // Set subKeys iteration direction, as it decides whether it's encoding or decoding
+    int8_t idxChange = 1;
+    int8_t subkeyIdx = 0;
+    if (isDecode)
+    {
+        subkeyIdx = 15;
+        idxChange = -1;
+    }
+    while(subkeyIdx < 16 && subkeyIdx >= 0)
     {
         tempData = rData;
 
         // L2 = R1, R2 = L1 xor Rf1 (R1 goes into Feistel, becomes Rf1)
-        rData.val = lData.val ^ Feistel(rData, subKeys[i]).val;
+        rData.val = lData.val ^ Feistel(rData, subKeys[subkeyIdx]).val;
         lData = tempData;
+        subkeyIdx += idxChange;
     }
 
     lData = rData;
@@ -420,6 +429,16 @@ chunk64 DES::Process(chunk64 key, chunk64 data)
     // put into Final Permutation
     // u got single chunk of ciphertext
     return FinalPerm(cipher);
+}
+
+chunk64 DES::Encode(chunk64 key, chunk64 data)
+{
+    return Process(key, data, false);
+}
+
+chunk64 DES::Decode(chunk64 key, chunk64 data)
+{
+    return Process(key, data, true);
 }
 
 } // namespace TDESCA

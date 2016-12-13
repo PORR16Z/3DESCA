@@ -16,5 +16,11 @@
     <ClCompile Include="..\3DESCA\DES.cpp">
       <Filter>3DESCA</Filter>
     </ClCompile>
+    <ClCompile Include="..\3DESCA\TDES.cpp">
+      <Filter>3DESCA</Filter>
+    </ClCompile>
+    <ClCompile Include="TDESTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

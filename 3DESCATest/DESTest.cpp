@@ -1,39 +1,40 @@
 #include <gtest/gtest.h>
 #include "3DESCA/DES.hpp"
 
-const TDESCA::chunk64 result(0x235ad2a8608edf37);
 
-TEST(DES, Basic)
+const TDESCA::chunk64 msg1(0x6162636465666768); // 'abcdefgh'
+const TDESCA::chunk64 result1(0x8FB1F64BBB168810);
+const TDESCA::chunk64 msg2(0x6867666564636261); // 'hgfedcba'
+const TDESCA::chunk64 result2(0x21FE14F931B3F9D6);
+const TDESCA::chunk64 key(0x0123456789ABCDEF);
+
+TEST(DES, Encode)
 {
-    TDESCA::DES cipher;
+    TDESCA::DES cipherAlgorithm;
+    TDESCA::chunk64 cipherText = cipherAlgorithm.Encode(key, msg1);
 
-    TDESCA::chunk64 in(0x6162636465666768); // abcdefgh
-    //TDESCA::chunk64 in(0x0123456789ABCDEF);
-    //TDESCA::chunk64 key(0x133457799BBCDFF1);
-    TDESCA::chunk64 key(0xF1DFBC9B79573413);
-    TDESCA::chunk64 out = cipher.Process(key, in);
+    ASSERT_EQ(result1.val, cipherText.val) << "In hex: " << std::endl << std::hex << std::setfill('0') <<
+        cipherText.val << " vs expected " << result1.val << std::endl << std::endl;
 
-    EXPECT_EQ(result.val, out.val) << "In hex: " << std::endl << std::hex << std::setfill('0') <<
-        out.val << " vs expected " << result.val << std::endl << std::endl;
 
-    in.val = 0x6867666564636261; // abcdefgh
-    key.val = 0x0102030405060708;
-    out = cipher.Process(key, in);
+    cipherText = cipherAlgorithm.Encode(key, msg2);
 
-    EXPECT_EQ(result.val, out.val) << "In hex: " << std::endl << std::hex << std::setfill('0') <<
-        out.val << " vs expected " << result.val << std::endl << std::endl;
+    ASSERT_EQ(result2.val, cipherText.val) << "In hex: " << std::endl << std::hex << std::setfill('0') <<
+        cipherText.val << " vs expected " << result2.val << std::endl << std::endl;
+}
 
-    in.val = 0x6162636465666768; // abcdefgh
-    key.val = 0x0807060504030201;
-    out = cipher.Process(key, in);
+TEST(DES, Decode)
+{
+    TDESCA::DES cipherAlgorithm;
+    TDESCA::chunk64 cipherText = cipherAlgorithm.Encode(key, msg1);
+    TDESCA::chunk64 decMsg1 = cipherAlgorithm.Decode(key, cipherText);
 
-    EXPECT_EQ(result.val, out.val) << "In hex: " << std::endl << std::hex << std::setfill('0') <<
-        out.val << " vs expected " << result.val << std::endl << std::endl;
+    ASSERT_EQ(msg1.val, decMsg1.val) << "In hex: " << std::endl << std::hex << std::setfill('0') <<
+        decMsg1.val << " vs expected " << msg1.val << std::endl << std::endl;
 
-    in.val = 0x6867666564636261; // abcdefgh
-    key.val = 0x0807060504030201;
-    out = cipher.Process(key, in);
+    cipherText = cipherAlgorithm.Encode(key, msg2);
+    TDESCA::chunk64 decMsg2 = cipherAlgorithm.Decode(key, cipherText);
 
-    EXPECT_EQ(result.val, out.val) << "In hex: " << std::endl << std::hex << std::setfill('0') <<
-        out.val << " vs expected " << result.val << std::endl << std::endl;
+    ASSERT_EQ(msg2.val, decMsg2.val) << "In hex: " << std::endl << std::hex << std::setfill('0') <<
+        decMsg2.val << " vs expected " << msg2.val << std::endl << std::endl;
 }

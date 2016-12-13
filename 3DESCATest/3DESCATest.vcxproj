@@ -146,8 +146,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\3DESCA\DES.cpp" />
+    <ClCompile Include="..\3DESCA\TDES.cpp" />
     <ClCompile Include="DESTest.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="TDESTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
