@@ -128,10 +128,13 @@
     <ClInclude Include="Bit.hpp" />
     <ClInclude Include="Chunk.hpp" />
     <ClInclude Include="DES.hpp" />
+    <ClInclude Include="FileUtilities.hpp" />
     <ClInclude Include="TDES.hpp" />
+    <ClInclude Include="Timer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DES.cpp" />
+    <ClCompile Include="FileUtilities.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TDES.cpp" />
   </ItemGroup>

@@ -5,10 +5,13 @@
     <ClInclude Include="DES.hpp" />
     <ClInclude Include="Chunk.hpp" />
     <ClInclude Include="TDES.hpp" />
+    <ClInclude Include="Timer.hpp" />
+    <ClInclude Include="FileUtilities.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="DES.cpp" />
     <ClCompile Include="TDES.cpp" />
+    <ClCompile Include="FileUtilities.cpp" />
   </ItemGroup>
 </Project>
