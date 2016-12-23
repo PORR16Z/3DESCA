@@ -2,6 +2,7 @@
 #include "Bit.hpp"
 #include "Timer.hpp"
 #include "FileUtilities.hpp"
+#include "MpiRun.hpp"
 #include <vector>
 #include <iostream>
 
@@ -11,6 +12,9 @@ const TDESCA::chunk64 key(0x0123456789ABCDEF);
 int main()
 {
     std::string path = ExePath() + "\\..\\..\\..\\";
+    std::pair<double, double> result = MPI::measure(key, key, key);
+    std::cout << "Encode:" << result.first << std::endl << "Decode:" << result.second << std::endl;
+    /*
     {
         std::vector<TDESCA::chunk64> dataIn = readFileIntoChunks(path + "lorem.txt");
 
@@ -41,6 +45,6 @@ int main()
         })/1000 << " ms" << std::endl;
 
         saveChunksIntoFile(path + "lorem3.txt", dataOut);
-    }
+    } */
     return 0;
 }
