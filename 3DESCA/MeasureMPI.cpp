@@ -33,61 +33,121 @@ namespace MPI {
 
 double measureEncode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, const std::string& inPath, const std::string& outPath, boost::mpi::environment& env, boost::mpi::communicator& world)
 {
-    TDESCA::chunk64 inputChunk;
+    std::vector<TDESCA::chunk64> inputChunks;
+    std::vector<int> dataInSizes;
     TDESCA::TDES cipher;
     std::vector<TDESCA::chunk64> dataIn;
     Timer timer;
+    int dataInSize;
 
     // ENCODING
     if (world.rank() == 0)
+    {
         dataIn = readFileIntoChunks(inPath);
+        dataInSize = dataIn.size();
+    }
+    boost::mpi::broadcast(world, dataInSize, 0);
+    const int chunksSize = (dataInSize - 1) / world.size() + 1;
+    while(dataInSize > 0)
+    {
+        if (dataInSize >= chunksSize)
+        {
+            dataInSizes.push_back(chunksSize);
+            dataInSize -= chunksSize;
+        } else
+        {
+            dataInSizes.push_back(dataInSize);
+            dataInSize = 0;
+        }
+    }
+    inputChunks.resize(dataInSizes[world.rank()]);
 
     if (world.rank() == 0)
+    {
         timer.start();
+        boost::mpi::scatterv(world, dataIn, dataInSizes, inputChunks.data(), 0);
+    } else
+        boost::mpi::scatterv(world, inputChunks.data(), dataInSizes[world.rank()], 0);
 
-    boost::mpi::scatter(world, dataIn, inputChunk, 0);
+    std::vector<uint64_t> outputChunks;
+    outputChunks.reserve(inputChunks.size());
 
-    uint64_t outputChunk = cipher.Encode(key1, key2, key3, inputChunk).val;
+    for (const auto& i : inputChunks)
+        outputChunks.push_back(cipher.Encode(key1, key2, key3, i).val);
 
-    if (world.rank() == 0) {
+    if (world.rank() == 0)
+    {
         std::vector<uint64_t> dataOut;
-        dataOut.reserve(dataIn.size());
-        boost::mpi::gather(world, outputChunk, dataOut, 0);
+        dataOut.resize(dataIn.size());
+        boost::mpi::gatherv(world, outputChunks, dataOut.data(), dataInSizes, 0);
         double resultNs = timer.stopNs();
         saveChunksIntoFile(outPath, dataOut);
         return resultNs;
     }
-    boost::mpi::gather(world, outputChunk, 0);
+
+    boost::mpi::gatherv(world, outputChunks, 0);
+
     return 0;
 }
 
 double measureDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, const std::string& inPath, const std::string& outPath, boost::mpi::environment& env, boost::mpi::communicator& world)
 {
-    TDESCA::chunk64 inputChunk;
+    std::vector<TDESCA::chunk64> inputChunks;
+    std::vector<int> dataInSizes;
     TDESCA::TDES cipher;
     std::vector<TDESCA::chunk64> dataIn;
     Timer timer;
+    int dataInSize;
 
-    // ENCODING
+    // DECODING
     if (world.rank() == 0)
+    {
         dataIn = readFileIntoChunks(inPath);
+        dataInSize = dataIn.size();
+    }
+    boost::mpi::broadcast(world, dataInSize, 0);
+    const int chunksSize = (dataInSize - 1) / world.size() + 1;
+    while (dataInSize > 0)
+    {
+        if (dataInSize >= chunksSize)
+        {
+            dataInSizes.push_back(chunksSize);
+            dataInSize -= chunksSize;
+        }
+        else
+        {
+            dataInSizes.push_back(dataInSize);
+            dataInSize = 0;
+        }
+    }
+    inputChunks.resize(dataInSizes[world.rank()]);
 
     if (world.rank() == 0)
+    {
         timer.start();
+        boost::mpi::scatterv(world, dataIn, dataInSizes, inputChunks.data(), 0);
+    }
+    else
+        boost::mpi::scatterv(world, inputChunks.data(), dataInSizes[world.rank()], 0);
 
-    boost::mpi::scatter(world, dataIn, inputChunk, 0);
+    std::vector<uint64_t> outputChunks;
+    outputChunks.reserve(inputChunks.size());
 
-    uint64_t outputChunk = cipher.Decode(key1, key2, key3, inputChunk).val;
+    for (const auto& i : inputChunks)
+        outputChunks.push_back(cipher.Decode(key1, key2, key3, i).val);
 
-    if (world.rank() == 0) {
+    if (world.rank() == 0)
+    {
         std::vector<uint64_t> dataOut;
-        dataOut.reserve(dataIn.size());
-        boost::mpi::gather(world, outputChunk, dataOut, 0);
+        dataOut.resize(dataIn.size());
+        boost::mpi::gatherv(world, outputChunks, dataOut.data(), dataInSizes, 0);
         double resultNs = timer.stopNs();
         saveChunksIntoFile(outPath, dataOut);
         return resultNs;
     }
-    boost::mpi::gather(world, outputChunk, 0);
+
+    boost::mpi::gatherv(world, outputChunks, 0);
+
     return 0;
 }
 
@@ -102,7 +162,7 @@ std::pair<double, double> measure(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TD
     std::pair<double, double> resultNs{0.0, 0.0}, blank;
     double temp1, temp2;
 
-    for (int i = 0; i < repeatTimes; i++)
+    for (unsigned int i = 0; i < repeatTimes; i++)
     {
         temp1 = measureEncode(key1, key2, key3, inPath, encPath, env, world);
         temp2 = measureDecode(key1, key2, key3, encPath, decPath, env, world);
