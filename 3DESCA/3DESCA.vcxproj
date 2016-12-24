@@ -149,7 +149,8 @@
     <ClInclude Include="Chunk.hpp" />
     <ClInclude Include="DES.hpp" />
     <ClInclude Include="FileUtilities.hpp" />
-    <ClInclude Include="MpiRun.hpp" />
+    <ClInclude Include="MeasureLocal.hpp" />
+    <ClInclude Include="MeasureMPI.hpp" />
     <ClInclude Include="TDES.hpp" />
     <ClInclude Include="Timer.hpp" />
   </ItemGroup>
@@ -157,7 +158,8 @@
     <ClCompile Include="DES.cpp" />
     <ClCompile Include="FileUtilities.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MpiRun.cpp" />
+    <ClCompile Include="MeasureLocal.cpp" />
+    <ClCompile Include="MeasureMPI.cpp" />
     <ClCompile Include="TDES.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
