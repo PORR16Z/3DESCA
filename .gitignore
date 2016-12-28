@@ -17,8 +17,5 @@ cmake_install.cmake
 /Obj
 *.a
 
-# MineZPRft log files
-*.log
-
-# Chunk files
-ChunkBank
+# Boost
+/boost_*

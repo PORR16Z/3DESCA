@@ -3,43 +3,19 @@ from here (https://www.microsoft.com/en-us/download/details.aspx?id=52981)
 
 2. Install both
 
-3. Download boost 1.62.0 from here (https://sourceforge.net/projects/boost/?source=typ_redirect)
-4. unzip boost_1_62_0 folder into 3DESCA main dir
+3. Download boost 1.63.0 from here (https://sourceforge.net/projects/boost/?source=typ_redirect) (MUST BE 1_63)
+4. unzip boost_1_63_0 folder into 3DESCA main dir
 5. launch bootstrap.bat
 6. create file user-config.jam with line "using mpi ;" (without quotes) in the user folder (e.x. C:\Users\myUser\user-config.jam)
-7. go to boost_1_62_0/tools/build/src/tools/mpi.jam and change lines below line 248 (# Try to auto-configure to the Microsoft Compute Cluster Pack) to:
+7. If your MPI installation directories are different, go to boost_1_63_0/tools/build/src/tools/mpi.jam and change lines below line 248
+
 """
-    #local cluster_pack_path_native = "C:\\Program Files\\Microsoft MPI" ;
-    #local cluster_pack_path = [ path.make $(cluster_pack_path_native) ] ;
-    local win_ms_mpi_sdk = "C:\\Program Files (x86)\\Microsoft SDKs\\MPI" ;
-    local win_ms_mpi = "C:\\Program Files\\Microsoft MPI" ;
-    if [ GLOB $(win_ms_mpi_sdk)\\Include : mpi.h ]
-    {
-      if $(.debug-configuration)
-      {
-        ECHO "Found Microsoft MPI: $(win_ms_mpi_sdk)" ;
-      }
-      
-      # Pick up either the 32-bit or 64-bit library, depending on which address
-      # model the user has selected. Default to 32-bit.
-      options = <include>$(win_ms_mpi_sdk)/Include 
-                <address-model>64:<library-path>$(win_ms_mpi_sdk)/Lib/x64
-                <library-path>$(win_ms_mpi_sdk)/Lib/x86
-                <find-static-library>msmpi
-                <toolset>msvc:<define>_SECURE_SCL=0
-              ;
-              
-      # Setup the "mpirun" equivalent (mpiexec)
-      .mpirun = "\"$(win_ms_mpi)\\Bin\\mpiexec.exe"\" ;
-      .mpirun_flags = -n ;
-    }
-    else if $(.debug-configuration)
-    {
-      ECHO "Did not find Microsoft MPI in $(win_ms_mpi_sdk)." ;
-    }
-  } 
-""" as you can see, only MPI paths are changed.
-8. go to boost_1_62_0, open cmd and run:
+    # Paths for Microsoft MPI
+    local ms_mpi_path_native = "C:\\Program Files\\Microsoft MPI" ;
+    local ms_mpi_sdk_path_native = "C:\\Program Files (x86)\\Microsoft SDKs\\MPI" ;
+"""
+
+8. go to boost_1_63_0, open cmd and run:
 bjam.exe --with-mpi --with-serialization --toolchain=msvc-11.0 address-model=64
 9. After all these steps, x64 version should be buildable. If You want to run x86 version, just remove 'address-model=64' from the command and rerun it
 
