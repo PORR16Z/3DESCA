@@ -9,6 +9,7 @@
     <ClInclude Include="FileUtilities.hpp" />
     <ClInclude Include="MeasureMPI.hpp" />
     <ClInclude Include="MeasureLocal.hpp" />
+    <ClInclude Include="MeasureOMP.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -17,5 +18,6 @@
     <ClCompile Include="FileUtilities.cpp" />
     <ClCompile Include="MeasureMPI.cpp" />
     <ClCompile Include="MeasureLocal.cpp" />
+    <ClCompile Include="MeasureOMP.cpp" />
   </ItemGroup>
 </Project>
