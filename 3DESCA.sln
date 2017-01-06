@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3DESCA_MPI", "3DESCA_MPI\3D
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3DESCA_OMP", "3DESCA_OMP\3DESCA_OMP.vcxproj", "{74AEF74B-4698-449A-8E31-870031DE8B0F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3DESCA_CUDA", "3DESCA_CUDA\3DESCA_CUDA.vcxproj", "{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -66,6 +68,14 @@ Global
 		{74AEF74B-4698-449A-8E31-870031DE8B0F}.Release|x64.Build.0 = Release|x64
 		{74AEF74B-4698-449A-8E31-870031DE8B0F}.Release|x86.ActiveCfg = Release|Win32
 		{74AEF74B-4698-449A-8E31-870031DE8B0F}.Release|x86.Build.0 = Release|Win32
+		{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}.Debug|x64.ActiveCfg = Debug|x64
+		{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}.Debug|x64.Build.0 = Debug|x64
+		{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}.Debug|x86.ActiveCfg = Debug|Win32
+		{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}.Debug|x86.Build.0 = Debug|Win32
+		{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}.Release|x64.ActiveCfg = Release|x64
+		{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}.Release|x64.Build.0 = Release|x64
+		{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}.Release|x86.ActiveCfg = Release|Win32
+		{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

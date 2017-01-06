@@ -1,0 +1,3 @@
+1. Download CUDA from http://developer.nvidia.com/cuda-toolkit
+  * CUDA Toolkit Installer will probably want to install other things related to your system - ex. old GPU drivers. If you have everything up-to-date, I suggest unticking all other options and leaving only CUDA group.
+

@@ -46,11 +46,11 @@ double measureDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64
 
 std::pair<double, double> measure(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, std::string inPath, unsigned int repeatTimes)
 {
-	std::string encPath = inPath + ".enc";
-	std::string decPath = encPath + ".dec";
+    std::string encPath = inPath + ".enc";
+    std::string decPath = encPath + ".dec";
     std::pair<double, double> resultNs{0.0, 0.0};
 
-    for (int i = 0; i < repeatTimes; i++)
+    for (unsigned int i = 0; i < repeatTimes; i++)
     {
         resultNs.first += measureEncode(key1, key2, key3, inPath, encPath);
         resultNs.second += measureDecode(key1, key2, key3, encPath, decPath);

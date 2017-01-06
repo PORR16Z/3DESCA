@@ -25,17 +25,17 @@
     <ClInclude Include="..\3DESCA\FileUtilities.hpp" />
     <ClInclude Include="..\3DESCA\TDES.hpp" />
     <ClInclude Include="..\3DESCA\Timer.hpp" />
-    <ClInclude Include="MeasureMPI.hpp" />
+    <ClInclude Include="MeasureCUDA.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3DESCA\DES.cpp" />
     <ClCompile Include="..\3DESCA\FileUtilities.cpp" />
     <ClCompile Include="..\3DESCA\TDES.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MeasureMPI.cpp" />
+    <ClCompile Include="MeasureCUDA.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CB83B931-316C-4073-AF22-333E4AD45141}</ProjectGuid>
+    <ProjectGuid>{2E2F5181-29CC-4E56-BFC9-CC3BE47078DF}</ProjectGuid>
     <RootNamespace>My3DESCA_MPI</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>

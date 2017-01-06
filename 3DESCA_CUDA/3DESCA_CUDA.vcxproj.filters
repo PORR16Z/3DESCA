@@ -1,47 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="MeasureLocal.hpp" />
-    <ClInclude Include="Bit.hpp">
+    <ClInclude Include="..\3DESCA\Bit.hpp">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="Chunk.hpp">
+    <ClInclude Include="..\3DESCA\Chunk.hpp">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="DES.hpp">
+    <ClInclude Include="..\3DESCA\DES.hpp">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="FileUtilities.hpp">
+    <ClInclude Include="..\3DESCA\FileUtilities.hpp">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="TDES.hpp">
+    <ClInclude Include="..\3DESCA\TDES.hpp">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.hpp">
+    <ClInclude Include="..\3DESCA\Timer.hpp">
       <Filter>Backend</Filter>
     </ClInclude>
+    <ClInclude Include="MeasureCUDA.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MeasureLocal.cpp" />
-    <ClCompile Include="DES.cpp">
+    <ClCompile Include="..\3DESCA\DES.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="FileUtilities.cpp">
+    <ClCompile Include="..\3DESCA\FileUtilities.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="TDES.cpp">
+    <ClCompile Include="..\3DESCA\TDES.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="MeasureCUDA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Backend">
-      <UniqueIdentifier>{a6e680ac-40d6-4976-9a53-e843a78f09f2}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="CUDA">
-      <UniqueIdentifier>{ae14e180-12be-4444-94db-781d8546dd61}</UniqueIdentifier>
+      <UniqueIdentifier>{74d0228d-e938-4229-8ef1-353e87c59482}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

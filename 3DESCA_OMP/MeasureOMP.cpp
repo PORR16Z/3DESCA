@@ -20,7 +20,7 @@ namespace OMP {
 		timer.start();
 		omp_set_num_threads(threadsNumber);
 		#pragma omp parallel for shared(dataOut, dataIn)
-		for (int i = 0; i < dataIn.size(); i++)
+		for (int i = 0; i < static_cast<int>(dataIn.size()); i++)
 			dataOut[i] = cipher.Encode(key1, key2, key3, dataIn[i]).val;
 
 		double resultNs = timer.stopNs();
@@ -40,7 +40,7 @@ namespace OMP {
 		timer.start();
 		omp_set_num_threads(threadsNumber);
 		#pragma omp parallel for shared(dataOut, dataIn)
-		for (int i = 0; i < dataIn.size(); i++)
+		for (int i = 0; i < static_cast<int>(dataIn.size()); i++)
 			dataOut[i] = cipher.Decode(key1, key2, key3, dataIn[i]).val;
 	
 		double resultNs = timer.stopNs();
@@ -55,7 +55,7 @@ namespace OMP {
 		std::string decPath = encPath + ".dec";
 		std::pair<double, double> resultNs{ 0.0, 0.0 };
 
-		for (int i = 0; i < repeatTimes; i++)
+		for (unsigned int i = 0; i < repeatTimes; i++)
 		{
 			resultNs.first += measureEncode(key1, key2, key3, inPath, encPath, threadsNumber);
 			resultNs.second += measureDecode(key1, key2, key3, encPath, decPath, threadsNumber);
