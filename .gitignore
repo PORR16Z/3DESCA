@@ -19,3 +19,6 @@ cmake_install.cmake
 
 # Boost
 /boost_*
+lorem3.txt
+lorem2.txt
+lorem.txt.enc.dec

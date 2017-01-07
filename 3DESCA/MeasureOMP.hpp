@@ -1,8 +1,0 @@
-#pragma once
-
-#include "Bit.hpp"
-
-namespace OMP {
-	std::pair<double, double> measure(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, unsigned int repeatTimes = 1);
-	const int OMP_THREADS_NUMBER = 4;
-} // namespace MPI
