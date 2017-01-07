@@ -151,14 +151,12 @@ double measureDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64
     return 0;
 }
 
-std::pair<double, double> measure(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, unsigned int repeatTimes)
+std::pair<double, double> measure(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, std::string inPath, unsigned int repeatTimes)
 {
     boost::mpi::environment env;
     boost::mpi::communicator world;
-    std::string path = ExePath() + "\\..\\..\\..\\";
-    std::string inPath = path + "lorem.txt";
-    std::string encPath = path + "lorem2.txt";
-    std::string decPath = path + "lorem3.txt";
+	std::string encPath = inPath + ".enc";
+	std::string decPath = encPath + ".dec";
     std::pair<double, double> resultNs{0.0, 0.0}, blank;
     double temp1, temp2;
 

@@ -9,7 +9,7 @@
 
 namespace OMP {
 
-	double measureEncode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, const std::string& inPath, const std::string& outPath)
+	double measureEncode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, const std::string& inPath, const std::string& outPath, unsigned int threadsNumber)
 	{
 		std::vector<TDESCA::chunk64> dataIn = readFileIntoChunks(inPath);
 
@@ -18,7 +18,7 @@ namespace OMP {
 		Timer timer;
 
 		timer.start();
-		omp_set_num_threads(OMP_THREADS_NUMBER);
+		omp_set_num_threads(threadsNumber);
 		#pragma omp parallel for shared(dataOut, dataIn)
 		for (int i = 0; i < dataIn.size(); i++)
 			dataOut[i] = cipher.Encode(key1, key2, key3, dataIn[i]).val;
@@ -29,7 +29,7 @@ namespace OMP {
 		return resultNs;
 	}
 
-	double measureDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, const std::string& inPath, const std::string& outPath)
+	double measureDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, const std::string& inPath, const std::string& outPath, unsigned int threadsNumber)
 	{
 		std::vector<TDESCA::chunk64> dataIn = readFileIntoChunks(inPath);
 
@@ -38,7 +38,7 @@ namespace OMP {
 		Timer timer;
 
 		timer.start();
-		omp_set_num_threads(OMP_THREADS_NUMBER);
+		omp_set_num_threads(threadsNumber);
 		#pragma omp parallel for shared(dataOut, dataIn)
 		for (int i = 0; i < dataIn.size(); i++)
 			dataOut[i] = cipher.Decode(key1, key2, key3, dataIn[i]).val;
@@ -49,18 +49,16 @@ namespace OMP {
 		return resultNs;
 	}
 
-	std::pair<double, double> measure(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, unsigned int repeatTimes)
+	std::pair<double, double> measure(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, std::string inPath, unsigned int threadsNumber, unsigned int repeatTimes)
 	{
-		std::string path = ExePath() + "\\..\\..\\..\\";
-		std::string inPath = path + "lorem.txt";
-		std::string encPath = path + "lorem2.txt";
-		std::string decPath = path + "lorem3.txt";
+		std::string encPath = inPath + ".enc";
+		std::string decPath = encPath + ".dec";
 		std::pair<double, double> resultNs{ 0.0, 0.0 };
 
 		for (int i = 0; i < repeatTimes; i++)
 		{
-			resultNs.first += measureEncode(key1, key2, key3, inPath, encPath);
-			resultNs.second += measureDecode(key1, key2, key3, encPath, decPath);
+			resultNs.first += measureEncode(key1, key2, key3, inPath, encPath, threadsNumber);
+			resultNs.second += measureDecode(key1, key2, key3, encPath, decPath, threadsNumber);
 		}
 
 		return resultNs;
