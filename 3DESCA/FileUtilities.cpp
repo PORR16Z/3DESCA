@@ -29,7 +29,7 @@ std::vector<TDESCA::chunk64> readFileIntoChunks(std::string filePath)
     return dataIn;
 }
 
-void  saveChunksIntoFile(std::string filePath, std::vector<uint64_t> chunks)
+void  saveChunksIntoFile(std::string filePath, std::vector<TDESCA::chunk64> chunks)
 {
     std::ofstream fout(filePath, std::ios::out | std::ios::binary);
     fout.write(reinterpret_cast<const char*>(chunks.data()), chunks.size() * sizeof(uint64_t));

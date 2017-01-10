@@ -5,4 +5,4 @@
 
 std::string ExePath();
 std::vector<TDESCA::chunk64> readFileIntoChunks(std::string filePath);
-void  saveChunksIntoFile(std::string filePath, std::vector<uint64_t> chunks);
+void saveChunksIntoFile(std::string filePath, std::vector<TDESCA::chunk64> chunks);

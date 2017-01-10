@@ -7,7 +7,9 @@
 #include <iostream>
 
 
-const TDESCA::chunk64 key(0x0123456789ABCDEF);
+const TDESCA::chunk64 key1(0x0123456789ABCDEF);
+const TDESCA::chunk64 key2(0x1133557799BBDDFF);
+const TDESCA::chunk64 key3(0x02468ACE13579BDF);
 
 int main(int argc, char** argv)
 {
@@ -18,7 +20,7 @@ int main(int argc, char** argv)
 
 	std::pair<double, double> result;
 
-	result = MPI::measure(key, key, key, path, repeatTimes);
+	result = MPI::measure(key1, key2, key3, path, repeatTimes);
 	if (result.first > 0)
 	{
 	    std::cout << "REPEATED " << repeatTimes << " TIMES" << std::endl;

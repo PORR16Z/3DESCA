@@ -6,7 +6,9 @@
 #include <vector>
 #include <iostream>
 
-const TDESCA::chunk64 key(0x0123456789ABCDEF);
+const TDESCA::chunk64 key1(0x0123456789ABCDEF);
+const TDESCA::chunk64 key2(0x1133557799BBDDFF);
+const TDESCA::chunk64 key3(0x02468ACE13579BDF);
 
 int main(int argc, char** argv)
 {
@@ -19,7 +21,7 @@ int main(int argc, char** argv)
 
 	std::pair<double, double> result;
 
-	result = OMP::measure(key, key, key, path, threadsNumber, repeatTimes);
+	result = OMP::measure(key1, key2, key3, path, threadsNumber, repeatTimes);
 	std::cout << "REPEATED " << repeatTimes << " TIMES" << std::endl;
 	std::cout << "Encode: [Total]" << result.first / 1000000 << "ms | [Single]" << result.first / 1000000 / repeatTimes << "ms" << std::endl;
 	std::cout << "Decode: [Total]" << result.second / 1000000 << "ms | [Single]" << result.second / 1000000 / repeatTimes << "ms" << std::endl;

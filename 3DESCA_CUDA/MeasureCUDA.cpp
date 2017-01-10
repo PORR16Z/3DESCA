@@ -5,6 +5,7 @@
 #include "Timer.hpp"
 #include "MeasureCUDA.hpp"
 #include "FileUtilities.hpp"
+#include "Kernel.cuh"
 
 #include <vector>
 #include <iostream>
@@ -16,56 +17,56 @@ double measureEncode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64
 {
     std::vector<TDESCA::chunk64> inputChunks;
     std::vector<int> dataInSizes;
-    TDESCA::TDES cipher;
-    std::vector<TDESCA::chunk64> dataIn;
-    Timer timer;
 
     // ENCODING
-    dataIn = readFileIntoChunks(inPath);
-    inputChunks.resize(dataIn.size());
+    inputChunks = readFileIntoChunks(inPath);
 
-    std::vector<uint64_t> outputChunks;
-    outputChunks.reserve(inputChunks.size());
+    // input data must be a multiple of thread count per block
+    // which we assume to be 256
+    size_t originalSize = inputChunks.size();
+    if (originalSize % 256 != 0)
+    {
+        size_t missingSize = 256 - originalSize % 256;
+        inputChunks.resize(originalSize + missingSize);
+    }
 
-    timer.start();
+    std::vector<TDESCA::chunk64> outputChunks;
+    outputChunks.resize(inputChunks.size());
 
-    for (const auto& i : inputChunks)
-        outputChunks.push_back(cipher.Encode(key1, key2, key3, i).val);
+    double resultNs;
+    CudaEncode(key1, key2, key3, inputChunks.data(), inputChunks.size(), outputChunks.data(), &resultNs);
 
-    std::vector<uint64_t> dataOut;
-    dataOut.resize(dataIn.size());
-    double resultNs = timer.stopNs();
-    saveChunksIntoFile(outPath, dataOut);
+    // revert output to original size
+    outputChunks.resize(originalSize);
+    saveChunksIntoFile(outPath, outputChunks);
     return resultNs;
 }
 
 double measureDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, const std::string& inPath, const std::string& outPath)
 {
     std::vector<TDESCA::chunk64> inputChunks;
-    TDESCA::TDES cipher;
-    std::vector<TDESCA::chunk64> dataIn;
-    Timer timer;
 
     // DECODING
-    dataIn = readFileIntoChunks(inPath);
-    inputChunks.resize(dataIn.size());
+    inputChunks = readFileIntoChunks(inPath);
 
-    std::vector<uint64_t> outputChunks;
-    outputChunks.reserve(inputChunks.size());
+    // input data must be a multiple of thread count per block
+    // which we assume to be 256
+    size_t originalSize = inputChunks.size();
+    if (originalSize % 256 != 0)
+    {
+        size_t missingSize = 256 - originalSize % 256;
+        inputChunks.resize(originalSize + missingSize);
+    }
 
-    timer.start();
+    std::vector<TDESCA::chunk64> outputChunks;
+    outputChunks.resize(inputChunks.size());
 
-    for (const auto& i : inputChunks)
-        outputChunks.push_back(cipher.Decode(key1, key2, key3, i).val);
+    double resultNs;
+    CudaDecode(key1, key2, key3, inputChunks.data(), inputChunks.size(), outputChunks.data(), &resultNs);
 
-    std::vector<uint64_t> dataOut;
-    dataOut.resize(dataIn.size());
-
-    double resultNs = timer.stopNs();
-    saveChunksIntoFile(outPath, dataOut);
+    outputChunks.resize(originalSize);
+    saveChunksIntoFile(outPath, outputChunks);
     return resultNs;
-
-    return 0;
 }
 
 std::pair<double, double> measure(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64 key3, std::string inPath, unsigned int repeatTimes)

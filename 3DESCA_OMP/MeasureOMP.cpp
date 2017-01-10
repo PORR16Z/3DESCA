@@ -13,7 +13,7 @@ namespace OMP {
 	{
 		std::vector<TDESCA::chunk64> dataIn = readFileIntoChunks(inPath);
 
-		std::vector<uint64_t> dataOut(dataIn.size());
+		std::vector<TDESCA::chunk64> dataOut(dataIn.size());
 		TDESCA::TDES cipher;
 		Timer timer;
 
@@ -33,7 +33,7 @@ namespace OMP {
 	{
 		std::vector<TDESCA::chunk64> dataIn = readFileIntoChunks(inPath);
 
-		std::vector<uint64_t> dataOut(dataIn.size());
+		std::vector<TDESCA::chunk64> dataOut(dataIn.size());
 		TDESCA::TDES cipher;
 		Timer timer;
 

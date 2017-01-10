@@ -77,9 +77,9 @@ double measureEncode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64
 
     if (world.rank() == 0)
     {
-        std::vector<uint64_t> dataOut;
+        std::vector<TDESCA::chunk64> dataOut;
         dataOut.resize(dataIn.size());
-        boost::mpi::gatherv(world, outputChunks, dataOut.data(), dataInSizes, 0);
+        boost::mpi::gatherv(world, outputChunks, reinterpret_cast<uint64_t*>(dataOut.data()), dataInSizes, 0);
         double resultNs = timer.stopNs();
         saveChunksIntoFile(outPath, dataOut);
         return resultNs;
@@ -138,9 +138,9 @@ double measureDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64
 
     if (world.rank() == 0)
     {
-        std::vector<uint64_t> dataOut;
+        std::vector<TDESCA::chunk64> dataOut;
         dataOut.resize(dataIn.size());
-        boost::mpi::gatherv(world, outputChunks, dataOut.data(), dataInSizes, 0);
+        boost::mpi::gatherv(world, outputChunks, reinterpret_cast<uint64_t*>(dataOut.data()), dataInSizes, 0);
         double resultNs = timer.stopNs();
         saveChunksIntoFile(outPath, dataOut);
         return resultNs;

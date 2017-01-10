@@ -7,36 +7,32 @@
     <ClInclude Include="..\3DESCA\Chunk.hpp">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\3DESCA\DES.hpp">
-      <Filter>Backend</Filter>
-    </ClInclude>
     <ClInclude Include="..\3DESCA\FileUtilities.hpp">
-      <Filter>Backend</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3DESCA\TDES.hpp">
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="..\3DESCA\Timer.hpp">
       <Filter>Backend</Filter>
     </ClInclude>
+    <ClInclude Include="Kernel.cuh" />
+    <ClInclude Include="DES.cuh" />
+    <ClInclude Include="TDES.cuh" />
     <ClInclude Include="MeasureCUDA.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="..\3DESCA\DES.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
     <ClCompile Include="..\3DESCA\FileUtilities.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\3DESCA\TDES.cpp">
-      <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="MeasureCUDA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Backend">
       <UniqueIdentifier>{74d0228d-e938-4229-8ef1-353e87c59482}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="Kernel.cu" />
+    <CudaCompile Include="DES.cu" />
+    <CudaCompile Include="TDES.cu" />
+    <CudaCompile Include="MeasureCUDA.cpp" />
+    <CudaCompile Include="Main.cpp" />
   </ItemGroup>
 </Project>

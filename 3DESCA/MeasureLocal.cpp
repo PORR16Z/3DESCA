@@ -12,7 +12,7 @@ double measureEncode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64
 {
     std::vector<TDESCA::chunk64> dataIn = readFileIntoChunks(inPath);
 
-    std::vector<uint64_t> dataOut;
+    std::vector<TDESCA::chunk64> dataOut;
     dataOut.reserve(dataIn.size());
     TDESCA::TDES cipher;
     Timer timer;
@@ -30,7 +30,7 @@ double measureDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2, TDESCA::chunk64
 {
     std::vector<TDESCA::chunk64> dataIn = readFileIntoChunks(inPath);
 
-    std::vector<uint64_t> dataOut;
+    std::vector<TDESCA::chunk64> dataOut;
     dataOut.reserve(dataIn.size());
     TDESCA::TDES cipher;
     Timer timer;
