@@ -4,6 +4,8 @@
 
 #include <cuda.h>
 
+#include <iostream>
+
 namespace CUDA {
 
 __global__ void kernelEncode(TDESCA::chunk64* keys, TDESCA::chunk64* dataIn,
@@ -24,35 +26,40 @@ __global__ void kernelDecode(TDESCA::chunk64* keys, TDESCA::chunk64* dataIn,
 
 void CudaEncode(TDESCA::chunk64 key1, TDESCA::chunk64 key2,
                 TDESCA::chunk64 key3, TDESCA::chunk64* dataIn,
-                unsigned int chunkCount, TDESCA::chunk64* dataOut, double* timeOut)
+                unsigned int chunkCount, unsigned int threadsNum,
+                TDESCA::chunk64* dataOut, double* timeOut)
 {
     Timer timer;
 
     TDESCA::chunk64* cudaDataIn;
     TDESCA::chunk64* cudaDataOut;
     TDESCA::chunk64* cudaKeys;
-    cudaError_t err;
 
-    err = cudaMalloc(&cudaDataIn, chunkCount * sizeof(TDESCA::chunk64));
-    err = cudaMalloc(&cudaKeys, 3 * sizeof(TDESCA::chunk64));
-    err = cudaMalloc(&cudaDataOut, chunkCount * sizeof(TDESCA::chunk64));
+    cudaMalloc(&cudaDataIn, chunkCount * sizeof(TDESCA::chunk64));
+    cudaMalloc(&cudaKeys, 3 * sizeof(TDESCA::chunk64));
+    cudaMalloc(&cudaDataOut, chunkCount * sizeof(TDESCA::chunk64));
 
     TDESCA::chunk64 keys[] = { key1, key2, key3 };
 
-    err = cudaMemcpy(cudaDataIn, dataIn, chunkCount * sizeof(TDESCA::chunk64), cudaMemcpyHostToDevice);
-    err = cudaMemcpy(cudaKeys, keys, 3 * sizeof(TDESCA::chunk64), cudaMemcpyHostToDevice);
+    cudaMemcpy(cudaDataIn, dataIn, chunkCount * sizeof(TDESCA::chunk64), cudaMemcpyHostToDevice);
+    cudaMemcpy(cudaKeys, keys, 3 * sizeof(TDESCA::chunk64), cudaMemcpyHostToDevice);
 
-    cudaDeviceSynchronize();
-
-    const unsigned int threadCount = 256;
-    const unsigned int blockCount = chunkCount / 256;
+    unsigned int blockCount = chunkCount / threadsNum;
 
     timer.start();
-    kernelEncode<<<blockCount, threadCount>>>(cudaKeys, cudaDataIn, cudaDataOut);
+    kernelEncode<<<blockCount, threadsNum>>>(cudaKeys, cudaDataIn, cudaDataOut);
     cudaDeviceSynchronize();
     *timeOut = timer.stopNs();
 
-    err = cudaMemcpy(dataOut, cudaDataOut, chunkCount * sizeof(TDESCA::chunk64), cudaMemcpyDeviceToHost);
+    cudaError_t err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        std::cout << "CUDA Kernel failed to launch with error code " << err << std::endl;
+        *timeOut = -1.0;
+    }
+    else
+        err = cudaMemcpy(dataOut, cudaDataOut, chunkCount * sizeof(TDESCA::chunk64), cudaMemcpyDeviceToHost);
+
     cudaFree(cudaDataIn);
     cudaFree(cudaKeys);
     cudaFree(cudaDataOut);
@@ -60,7 +67,8 @@ void CudaEncode(TDESCA::chunk64 key1, TDESCA::chunk64 key2,
 
 void CudaDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2,
                 TDESCA::chunk64 key3, TDESCA::chunk64* dataIn,
-                unsigned int chunkCount, TDESCA::chunk64* dataOut, double* timeOut)
+                unsigned int chunkCount, unsigned int threadsNum,
+                TDESCA::chunk64* dataOut, double* timeOut)
 {
     Timer timer;
 
@@ -76,15 +84,22 @@ void CudaDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2,
 
     cudaMalloc(&cudaDataOut, chunkCount * sizeof(TDESCA::chunk64));
 
-    const unsigned int threadCount = 256;
-    const unsigned int blockCount = chunkCount / 256;
+    unsigned int blockCount = chunkCount / threadsNum;
 
     timer.start();
-    kernelDecode<<<blockCount, threadCount>>>(cudaKeys, cudaDataIn, cudaDataOut);
+    kernelDecode<<<blockCount, threadsNum>>>(cudaKeys, cudaDataIn, cudaDataOut);
     cudaDeviceSynchronize();
     *timeOut = timer.stopNs();
 
-    cudaMemcpy(dataOut, cudaDataOut, chunkCount * sizeof(TDESCA::chunk64), cudaMemcpyDeviceToHost);
+    cudaError_t err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        std::cout << "CUDA Kernel failed to launch with error code " << err << std::endl;
+        *timeOut = -1.0;
+    }
+    else
+        cudaMemcpy(dataOut, cudaDataOut, chunkCount * sizeof(TDESCA::chunk64), cudaMemcpyDeviceToHost);
+
     cudaFree(cudaDataIn);
     cudaFree(cudaDataOut);
     cudaFree(cudaKeys);
