@@ -9,17 +9,17 @@
 namespace CUDA {
 
 __global__ void kernelEncode(TDESCA::chunk64* keys, TDESCA::chunk64* dataIn,
-                             TDESCA::chunk64* dataOut)
+                             unsigned int threadCount, TDESCA::chunk64* dataOut)
 {
-    int ind = threadIdx.x + blockIdx.x * 256;
+    int ind = threadIdx.x + blockIdx.x * threadCount;
     TDESCA::TDES cipher;
     dataOut[ind] = cipher.Encode(keys[0], keys[1], keys[2], dataIn[ind]);
 }
 
 __global__ void kernelDecode(TDESCA::chunk64* keys, TDESCA::chunk64* dataIn,
-                             TDESCA::chunk64* dataOut)
+                             unsigned int threadCount, TDESCA::chunk64* dataOut)
 {
-    int ind = threadIdx.x + blockIdx.x * 256;
+    int ind = threadIdx.x + blockIdx.x * threadCount;
     TDESCA::TDES cipher;
     dataOut[ind] = cipher.Decode(keys[0], keys[1], keys[2], dataIn[ind]);
 }
@@ -47,7 +47,7 @@ void CudaEncode(TDESCA::chunk64 key1, TDESCA::chunk64 key2,
     unsigned int blockCount = chunkCount / threadsNum;
 
     timer.start();
-    kernelEncode<<<blockCount, threadsNum>>>(cudaKeys, cudaDataIn, cudaDataOut);
+    kernelEncode<<<blockCount, threadsNum>>>(cudaKeys, cudaDataIn, threadsNum, cudaDataOut);
     cudaDeviceSynchronize();
     *timeOut = timer.stopNs();
 
@@ -87,7 +87,7 @@ void CudaDecode(TDESCA::chunk64 key1, TDESCA::chunk64 key2,
     unsigned int blockCount = chunkCount / threadsNum;
 
     timer.start();
-    kernelDecode<<<blockCount, threadsNum>>>(cudaKeys, cudaDataIn, cudaDataOut);
+    kernelDecode<<<blockCount, threadsNum>>>(cudaKeys, cudaDataIn, threadsNum, cudaDataOut);
     cudaDeviceSynchronize();
     *timeOut = timer.stopNs();
 
